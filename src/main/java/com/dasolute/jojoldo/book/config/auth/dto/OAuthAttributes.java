@@ -28,7 +28,25 @@ public class OAuthAttributes {
 	}
 
 	public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
+		if (StringUtils.equals(registrationId, "naver")) {
+			// response > id 가 유저를 식별할 수 있는 정보이다.
+			return ofNaver("id", attributes);
+		}
+
 		return ofGoogle(userNameAttributeName, attributes);
+	}
+
+	private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+		Map<String, Object> responseMap = (Map<String, Object>)attributes.get("response");
+
+
+		return OAuthAttributes.builder()
+				.name(MapUtils.getString(responseMap, "name"))
+				.email(MapUtils.getString(responseMap, "email"))
+				.picture(MapUtils.getString(responseMap, "profile_image"))
+				.attributes(responseMap)
+				.nameAttributeKey(userNameAttributeName)
+				.build();
 	}
 
 	public static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
