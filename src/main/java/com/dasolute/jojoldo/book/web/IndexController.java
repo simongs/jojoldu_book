@@ -1,5 +1,6 @@
 package com.dasolute.jojoldo.book.web;
 
+import com.dasolute.jojoldo.book.config.auth.LoginUser;
 import com.dasolute.jojoldo.book.config.auth.dto.SessionUser;
 import com.dasolute.jojoldo.book.service.PostsService;
 import com.dasolute.jojoldo.book.web.dto.PostsResponseDto;
@@ -17,15 +18,11 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
 
 	private final PostsService postsService;
-	private final HttpSession httpSession;
 
-
+	// 로그인을 성공하면 CustomOAuth2UserService에서 session에 저장하도록 했다.
 	@GetMapping("/")
-	public String index(Model model) {
+	public String index(Model model, @LoginUser SessionUser user) {
 		model.addAttribute("posts", postsService.findAllDesc());
-
-		// 로그인을 성공하면 CustomOAuth2UserService에서 session에 저장하도록 했다.
-		SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
 		if (user != null) {
 			model.addAttribute("userName", user.getName());
