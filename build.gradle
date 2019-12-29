@@ -30,7 +30,14 @@ repositories {
 
 
 dependencies {
+    // gradle 5 + lombok 은 아래와 같이 설정해야 한다.
+    /*compileOnly("org.projectlombok:lombok")
+    testCompileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    testAnnotationProcessor("org.projectlombok:lombok")*/
+
+    compile('org.projectlombok:lombok')
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    //testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
 }
