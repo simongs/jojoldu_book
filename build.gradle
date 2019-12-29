@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        springBootVersion = '2.2.2.RELEASE'
+        springBootVersion = '2.1.9.RELEASE'
     }
 
     repositories {
@@ -39,5 +39,8 @@ dependencies {
     compile('org.projectlombok:lombok')
     compile('org.springframework.boot:spring-boot-starter-web')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    //testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
+
+    // JPA
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("com.h2database:h2")
 }
