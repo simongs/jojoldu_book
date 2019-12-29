@@ -1,12 +1,17 @@
 package com.dasolute.jojoldo.book.web;
 
+import com.dasolute.jojoldo.book.config.auth.SecurityConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.context.annotation.ComponentScan.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -15,30 +20,38 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest
+@WebMvcTest(controllers = HelloController.class,
+		excludeFilters = {
+				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+		}
+)
 public class HelloControllerTest {
 
 	@Autowired
-	private MockMvc mockMvc;
+	private MockMvc mvc;
 
+	@WithMockUser(roles="USER")
 	@Test
-	public void test() throws Exception {
-		mockMvc.perform(get("/hello"))
+	public void hello가_리턴된다() throws Exception {
+		String hello = "helloWorld";
+
+		mvc.perform(get("/hello"))
 				.andExpect(status().isOk())
-				.andExpect(content().string("helloWorld"));
+				.andExpect(content().string(hello));
 	}
 
+	@WithMockUser(roles="USER")
 	@Test
-	public void test_dto() throws Exception {
-		String name = "sim";
-		int amount = 10;
+	public void helloDto가_리턴된다() throws Exception {
+		String name = "hello";
+		int amount = 1000;
 
-		mockMvc.perform(get("/hello/dto")
-					.param("name", name)
-					.param("amount", String.valueOf(amount)))
+		mvc.perform(
+				get("/hello/dto")
+						.param("name", name)
+						.param("amount", String.valueOf(amount)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.name", is(name)))
 				.andExpect(jsonPath("$.amount", is(amount)));
 	}
-
 }

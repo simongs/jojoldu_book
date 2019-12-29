@@ -46,4 +46,5 @@ dependencies {
     compile('org.apache.commons:commons-collections4:4.4')
 
     compile('org.springframework.session:spring-session-jdbc')
+    testCompile('org.springframework.security:spring-security-test')
 }
