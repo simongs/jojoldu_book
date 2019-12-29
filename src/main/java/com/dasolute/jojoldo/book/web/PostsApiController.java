@@ -7,6 +7,7 @@ import com.dasolute.jojoldo.book.web.dto.PostsResponseDto;
 import com.dasolute.jojoldo.book.web.dto.PostsSaveRequestDto;
 import com.dasolute.jojoldo.book.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,12 @@ public class PostsApiController {
 	}
 
 	@GetMapping("/api/v1/posts/{id}")
-	private PostsResponseDto findById(@PathVariable("id") Long id) {
+	public PostsResponseDto findById(@PathVariable("id") Long id) {
 		return postsService.findById(id);
+	}
+
+	@DeleteMapping("/api/v1/posts/{id}")
+	public Long delete(@PathVariable("id") Long id) {
+		return postsService.delete(id);
 	}
 }
